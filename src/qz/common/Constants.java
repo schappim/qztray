@@ -14,7 +14,7 @@ public class Constants {
     public static final String HEXES = "0123456789ABCDEF";
     public static final char[] HEXES_ARRAY = HEXES.toCharArray();
     public static final int BYTE_BUFFER_SIZE = 8192;
-    public static final Version VERSION = Version.valueOf("2.2.2-SNAPSHOT");
+    public static final Version VERSION = Version.valueOf("2.2.2-KOI-1");
     public static final Version JAVA_VERSION = SystemUtilities.getJavaVersion();
     public static final String JAVA_VENDOR = System.getProperty("java.vendor");
 
@@ -33,21 +33,21 @@ public class Constants {
 
     public static final int BORDER_PADDING = 10;
 
-    public static final String ABOUT_TITLE = "QZ Tray";
-    public static final String ABOUT_EMAIL = "support@qz.io";
-    public static final String ABOUT_URL = "https://qz.io";
-    public static final String ABOUT_COMPANY = "QZ Industries, LLC";
-    public static final String ABOUT_CITY = "Canastota";
-    public static final String ABOUT_STATE = "NY";
-    public static final String ABOUT_COUNTRY = "US";
+    public static final String ABOUT_TITLE = "Koi Tray";
+    public static final String ABOUT_EMAIL = "hello@koi.app";
+    public static final String ABOUT_URL = "https://koi.app";
+    public static final String ABOUT_COMPANY = "Chick Commerce Pty Ltd";
+    public static final String ABOUT_CITY = "Sydney";
+    public static final String ABOUT_STATE = "NSW";
+    public static final String ABOUT_COUNTRY = "Australia";
 
     public static final String ABOUT_LICENSING_URL = Constants.ABOUT_URL + "/licensing";
     public static final String ABOUT_SUPPORT_URL = Constants.ABOUT_URL + "/support";
     public static final String ABOUT_PRIVACY_URL = Constants.ABOUT_URL + "/privacy";
     public static final String ABOUT_DOWNLOAD_URL = Constants.ABOUT_URL + "/download";
 
-    public static final String VERSION_CHECK_URL = "https://api.github.com/repos/qzind/tray/releases";
-    public static final String VERSION_DOWNLOAD_URL = "https://github.com/qzind/tray/releases";
+    public static final String VERSION_CHECK_URL = "https://api.github.com/repos/schappim/qztray/releases";
+    public static final String VERSION_DOWNLOAD_URL = "https://github.com/schappim/qztray/releases";
     public static final boolean ENABLE_DIAGNOSTICS = true; // Diagnostics menu (logs, etc)
 
     public static final String TRUSTED_CERT = String.format("Verified by %s", Constants.ABOUT_COMPANY);
@@ -108,4 +108,12 @@ public class Constants {
     public static final Integer[] WSS_PORTS = {8181, 8282, 8383, 8484};
     public static final Integer[] WS_PORTS = {8182, 8283, 8384, 8485};
     public static final Integer[] CUPS_RSS_PORTS = {8586, 8687, 8788, 8889};
+
+    /* API Constants */
+    public static final String API_ADMIN_URL = "https://koi.app/admin";
+    public static final String DEFAULT_API_DOMAIN = "koi.app";
+    public static final String API_CHANNEL = "PrintChannel";
+
+    public static final String ENCRYPT_KEY = "Bar12345Bar12345";
+    public static final String ENCRYPT_INIT = "RandomInitVector";
 }

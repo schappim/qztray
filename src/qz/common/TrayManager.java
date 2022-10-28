@@ -24,6 +24,7 @@ import qz.ui.*;
 import qz.ui.component.IconCache;
 import qz.ui.tray.TrayType;
 import qz.utils.*;
+import qz.ws.APIClient;
 import qz.ws.PrintSocketServer;
 import qz.ws.SingleInstanceChecker;
 
@@ -317,6 +318,9 @@ public class TrayManager {
         desktopItem.setMnemonic(KeyEvent.VK_D);
         desktopItem.addActionListener(desktopListener());
 
+        JMenuItem resetItem = new JMenuItem("Reset API Token", iconCache.getIcon(DESKTOP_ICON));
+        resetItem.addActionListener(resetAPIToken());
+
         anonymousItem = new JCheckBoxMenuItem("Block anonymous requests");
         anonymousItem.setToolTipText("Blocks all requests that do not contain a valid certificate/signature");
         anonymousItem.setMnemonic(KeyEvent.VK_K);
@@ -329,6 +333,7 @@ public class TrayManager {
         }
         advancedMenu.add(sitesItem);
         advancedMenu.add(desktopItem);
+        advancedMenu.add(resetItem);
         advancedMenu.add(new JSeparator());
         advancedMenu.add(anonymousItem);
 
@@ -395,6 +400,16 @@ public class TrayManager {
     private final ActionListener desktopListener() {
         return e -> {
             shortcutCreator.createDesktopShortcut();
+        };
+    }
+
+    private final ActionListener resetAPIToken() {
+        return e -> {
+            if (!confirmDialog.prompt("Are you sure you want to reset your API token?")) {
+                return;
+            }
+            APIClient client = APIClient.init();
+            client.resetToken();
         };
     }
 

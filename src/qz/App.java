@@ -17,6 +17,7 @@ import qz.installer.certificate.ExpiryTask;
 import qz.installer.certificate.KeyPairWrapper;
 import qz.installer.certificate.NativeCertificateInstaller;
 import qz.utils.*;
+import qz.ws.APIClient;
 import qz.ws.PrintSocketServer;
 import qz.ws.SingleInstanceChecker;
 
@@ -65,6 +66,8 @@ public class App {
                 NativeCertificateInstaller.getInstance().install(certManager.getKeyPair(KeyPairWrapper.Type.CA).getCert());
             }
         }
+
+        APIClient client = APIClient.init();
 
         try {
             log.info("Starting {} {}", Constants.ABOUT_TITLE, Constants.VERSION);

@@ -1,0 +1,112 @@
+Compatibility
+✅ 2.1 | ✅ 2.0 | ✅ 1.9 | ...
+Steps
+First, install dependencies (jdk, git, ant, nsis/makeself) per Install Dependencies
+
+Clone the source code per Clone Source Code
+
+Pull in the latest source code
+
+cd tray
+git pull
+Compile
+
+ant
+Optional: Start the software up using this command.
+
+Package
+
+ant nsis       # <-- Windows installer
+ant pkgbuild   # <-- Apple installer
+ant makeself   # <-- Linux installer
+Note: The installer will be placed in ./out/qz-tray-x.x.x.x, (i.e. .exe, .run, .pkg)
+
+Advanced
+ANT Command Line
+Override internal certificate used for signature validation*
+
+ant nsis -Dauthcert.use=path/to/override.crt
+*Since 2.0.2
+
+ANT Properties File
+Common uses:
+
+Signing a Windows installer executable
+Providing persistent ant property overrides
+Create tray/.../private/private.properties
+
+signing.alias=#keystore alias
+signing.tsaurl=#timestamp url
+signing.keypass=#key password
+signing.storepass=#store password
+signing.keystore=#path to jks file
+#authcert.use=#path to signing auth cert
+IntelliJ
+Download and install JDK 1.7 or higher. (AdoptOpenJDK 11 is recommended)
+
+Download and install IntelliJ from https://www.jetbrains.com/idea/
+
+Launch IntelliJ
+
+When prompted, click Check out from Version Control (GitHub)
+
+Host: github.com
+Auth type: password
+Login: <github username>
+Password: <github password>
+
+Clone Repository
+
+Git Repository URL: https://github.com/qzind/tray
+Parent Directory: <leave default, usually "C:\Users\username\IdeaProjects">
+Directory Name: <leave default, "tray">
+Note, if the Parent Directory doesn't exist, create it.
+
+Open the project
+
+Switch to project view using ALT + 1
+
+Click File, Project Structure
+
+Verify Project SDK is correct. This must be 1.7 or higher (QZ Tray 2.1 requires 1.8 or higher).
+If <No SDK>, click New, JDK and browse to the appropriate install location, e.g. C:\Program Files\Java\jdk1.8.0_XX
+From the Project Explorer, Navigate to:
+
+tray, src, qz, ws, PrintSocketServer
+Right Click, Run
+On Windows, a firewall prompt may appear, click Run
+Exit PrintSocketServer by locating it in the System Tray, Right Click, Exit
+
+Alternately, you can click Stop within IntelliJ from bottom left "Run" tab
+NOTE: for version 1.9 only
+
+Click File, Project Structure and Navigate to Modules, Dependencies Tab
+If plugin.jar shows an error, remove it and re-add it:
+Click plugin.jar, Click - to remove
+Click + to add, JARs or Directories
+Browse to the SDK location, e.g. C:\Program Files\Java\jdk1.8.0_XX\jre\lib\plugin.jar
+Make sure plugin.jar is at the top of the Dependencies listing, use arrows if needed, OK
+Optional to enable HTTPS support in IntelliJ (<=2.0 only)
+
+If a version of QZ Tray is NOT installed, generate a qz-tray.jks and qz-tray.properties manually
+
+Create a 2048 bit RSA java keystore with an alias qz-tray
+See also ssl.properties#L21
+Create a properties file with the following lines in it:
+wss.alias=qz-tray
+wss.keystore=<path-to>/private-key.jks
+wss.keypass=<password>
+wss.storepass=<password>
+If QZ Tray is installed, you may use the qz-tray.properties located in the installation folder.
+
+Click on PrintSocketServer.java in the Projects Navigator
+
+From the file menu click Run, Edit Configurations...
+
+In the VM Options add -DsslPropertiesFile=<path-to>/qz-tray.properties
+
+Windows: -DsslPropertiesFile="C:\\Program Files\\QZ Tray\\qz-tray.properties"
+Troubleshooting
+If you're having issues building using AdoptOpenJDK 11 / Java 11, see bug report #456 for workaround
+Error:(3, 24) java: cannot access javafx.animation.PauseTransition
+If IntelliJ complains package sun.awt does not exist, see the workaround here

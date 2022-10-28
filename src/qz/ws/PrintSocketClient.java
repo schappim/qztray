@@ -50,9 +50,25 @@ public class PrintSocketClient {
     private static final HashMap<Integer,SocketConnection> openConnections = new HashMap<>();
 
     private Server server;
+    private static PrintSocketClient psc = null;
+    private static APIClient client = APIClient.init();
 
-    public PrintSocketClient(Server server) {
-        this.server = server;
+    public static PrintSocketClient init() {
+        if (psc == null) {
+            psc = new PrintSocketClient();
+        }
+
+        return psc;
+    }
+
+    public static PrintSocketClient init(Server server) {
+        if (psc == null) {
+            psc = new PrintSocketClient();
+            psc.server = server;
+        }
+
+        return psc;
+        //this.server = server;
     }
 
     @OnWebSocketConnect
@@ -209,7 +225,7 @@ public class PrintSocketClient {
      * @param session WebSocket session
      * @param json    JSON received from web API
      */
-    private void processMessage(Session session, JSONObject json, SocketConnection connection, RequestState request) throws JSONException, SerialPortException, DeviceException, IOException, ListenerNotFoundException {
+    public void processMessage(Session session, JSONObject json, SocketConnection connection, RequestState request) throws JSONException, SerialPortException, DeviceException, IOException, ListenerNotFoundException {
         String UID = json.optString("uid");
         SocketMethod call = SocketMethod.findFromCall(json.optString("call"));
         JSONObject params = json.optJSONObject("params");
@@ -646,6 +662,16 @@ public class PrintSocketClient {
                     log.warn("A valid challenge was not provided: {}, ignoring request to close", challenge);
                 }
                 break;
+            case SET_API_TOKEN:
+                client.setToken(
+                        params.optString("token", null),
+                        params.optString("url", "koi.app"));
+
+                log.info("Setting API key **************");
+                log.info(params.optString("key"));
+
+                sendResult(session, UID, true);
+                break;
             case INVALID:
             default:
                 sendError(session, UID, "Invalid function call: " + json.optString("call", "NONE"));
@@ -770,11 +796,16 @@ public class PrintSocketClient {
      * @param reply   JSON Object of reply to web API
      */
     private static synchronized void send(Session session, JSONObject reply) throws WebSocketException {
-        try {
-            session.getRemote().sendString(reply.toString());
-        }
-        catch(IOException e) {
-            log.error("Could not send message", e);
+
+        client.send(reply.toString());
+
+        if (session != null && session.isOpen()) {
+            try {
+                session.getRemote().sendString(reply.toString());
+            }
+            catch(IOException e) {
+                log.error("Failed to send reply", e);
+            }
         }
     }
 

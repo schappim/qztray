@@ -83,7 +83,8 @@ public class PrintSocketServer {
                 // Handle WebSocket connections
                 WebSocketUpgradeFilter.configure(context);
                 NativeWebSocketServletContainerInitializer.configure(context, (ctx, container) -> {
-                    container.addMapping(new ServletPathSpec("/"), (req, resp) -> new PrintSocketClient(server));
+                    //container.addMapping(new ServletPathSpec("/"), (req, resp) -> new PrintSocketClient(server));
+                    container.addMapping(new ServletPathSpec("/"), (req, resp) -> PrintSocketClient.init(server));
                     container.getPolicy().setMaxTextMessageSize(MAX_MESSAGE_SIZE);
                 });
 
